@@ -1,6 +1,6 @@
 // Winter'24
 // Instructor: Diba Mirza
-// Student name: 
+// Student name: Oscar Valeriano
 #include <iostream>
 #include <fstream>
 #include <string>
