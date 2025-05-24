@@ -2,11 +2,29 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <algorith>
+#include <algorithm>
 
 void Movies::readCSV(const std::string& filename){
-    istd::ifstream file_input(filename);
-    if 
+    std::ifstream file_input(filename);
+    if (!file_input){
+        std::cerr << "Error: Cannot Open the file " << filename << '\n';
+        return;
+    }
+    std::string line;
+    while (std::getline(file_input, line)) {
+        std::istringstream line_stream(line);
+        std::string title, ratingStr;
+
+        if (std::getline(line_stream, title, ',') &&
+            std::getline(line_stream, ratingStr)) 
+        {
+            double rating = std::stod(ratingStr);
+            data.push_back({title, rating});  
+        }
+    }
+    std::sort(data.begin(), data.end(),
+        [](const Movie& a, const Movie& b) { return a.title < b.title; });
 
 }
+
 
