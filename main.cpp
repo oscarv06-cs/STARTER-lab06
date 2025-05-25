@@ -7,7 +7,6 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include <sstream>
 using namespace std;
 #include "movies.h"
 #include "utilities.h"
@@ -40,16 +39,11 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    vector<string> prefixes;
-    string line;
-    while (getline(prefixFile, line)) {
-        line = trim(line);
-        if (!line.empty()) {
-            prefixes.push_back(line);
-        }
-    }
+    string prefix;
+    while (getline(prefixFile, prefix)) {
+        prefix = trim(prefix);
+        if (prefix.empty()) continue;
 
-    for (const string& prefix : prefixes) {
         vector<Movie> matches = movies.withPrefix(prefix);
         if (matches.empty()) {
             cout << "No movies found with prefix " << prefix << endl;
