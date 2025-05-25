@@ -11,26 +11,16 @@ void Movies::readCSV(const std::string& filename){
         std::cerr << "Error: Cannot Open the file " << filename << '\n';
         return;
     }
-    std::string line;
+    std::string line, title;
+    double rating;
     while (std::getline(file_input, line)) {
-        std::istringstream line_stream(line);
-        std::string title, ratingStr;
-    
-        if (std::getline(line_stream, title, ',') && std::getline(line_stream, ratingStr)) {
-            if (!ratingStr.empty()) { // Check if ratingStr is not empty
-                try {
-                    double rating = std::stod(ratingStr);
-                    data.push_back({title, rating});
-                } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid rating found in line: " << line << std::endl;
-                }
-            }
+        if (parseLine(line, title, rating)) {
+            data.push_back({title, rating});
         }
     }
-    
+
     std::sort(data.begin(), data.end(),
         [](const Movie& a, const Movie& b) { return a.title < b.title; });
-
 }
 
 void Movies::printAll()const {
