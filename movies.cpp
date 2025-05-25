@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip> 
 #include <algorithm>
 
 void Movies::readCSV(const std::string& filename){
@@ -25,6 +26,13 @@ void Movies::readCSV(const std::string& filename){
     std::sort(data.begin(), data.end(),
         [](const Movie& a, const Movie& b) { return a.title < b.title; });
 
+}
+
+void Movies::printAll()const {
+    std::cout << std::fixed << std::setprecision(1);
+    for (const Movie& m : data){
+        std::cout << m.title << ", " << m.rating << '\n';
+    }
 }
 
 
