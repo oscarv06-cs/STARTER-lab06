@@ -1,9 +1,6 @@
 // Winter'24
 // Instructor: Diba Mirza
 // Student name: Oscar Valeriano
-// Winter'24
-// Instructor: Diba Mirza
-// Student name: Oscar Valeriano
 
 #include "movies.h"
 #include "utilities.h"
