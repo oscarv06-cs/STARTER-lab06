@@ -45,7 +45,8 @@ int main(int argc, char* argv[]) {
     // For storing best movies for each prefix
     std::vector<std::pair<std::string, Movie>> bestMovies;
 
-    for (const std::string& prefix : prefixes) {
+    for (size_t i = 0; i < prefixes.size(); ++i) {
+        const std::string& prefix = prefixes[i];
         std::vector<Movie> matches = movies.withPrefix(prefix);
 
         if (matches.empty()) {
@@ -64,7 +65,11 @@ int main(int argc, char* argv[]) {
             std::cout << m.title << ", " << m.rating << '\n';
         }
 
-        // Best movie is now the first in the sorted list
+        // Print blank line after matches - but only if there is another prefix after this one
+        if (i + 1 < prefixes.size()) {
+            std::cout << '\n';
+        }
+
         bestMovies.emplace_back(prefix, matches[0]);
     }
 
