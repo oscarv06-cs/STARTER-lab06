@@ -108,11 +108,11 @@ Let:
    - Binary search to find the first match using "lower_bound": O(log n)  
    - Collecting all k matches: O(k)  
    - Sorting those k movies by rating (and title if there’s a tie): O(k log k)  
-   So for one prefix, it’s O(log n + k log k).  
-   For all m prefixes, the total becomes O(m (log n + k log k)).
+    So for one prefix, it’s O(log n + k log k)  
+ For all m prefixes, the total becomes O(m (log n + k log k)).
 
 **Overall Time Complexity:**  
-O(n log n + m (log n + k log k))
+O(n log n + m (log n + k log k)
 
 worse case, if all movies match a prefix (k = n):
 O(n log n + m n log n)
@@ -145,8 +145,8 @@ O(n + m + k)
 **Design Goal:**  
 I mainly designed my algorithm to be fast (low time complexity), especially since the assignment and leaderboard really emphasized speed for larger inputs.
 
- - By sorting movies up front and using binary search, I made sure lookups were quick.
-- I didn’t add extra data structures like tries or trees—just a sorted vector so memory usage stayed low and so the implementation and thinking things out would be easier. 
+ - By sorting movies up front and using binary search, I made sure lookups were quick, effective, and easy to do.
+- I didn’t add extra data structures, just a sorted vector so memory usage stayed relatively low and so the implementation and thinking things out would be easier. 
 - Temporary vectors for matches were the only extra memory I used. 
 
 **How it turned out:**  
