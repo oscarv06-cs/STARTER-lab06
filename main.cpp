@@ -91,7 +91,7 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
     return true;
 }
 
-int main(int argc, char* argv[])
+
 {
     if (argc != 2) {
         std::cerr << "usage: " << argv[0] << " inputmoviefile.csv\n";
