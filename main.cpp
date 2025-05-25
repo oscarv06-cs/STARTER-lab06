@@ -14,7 +14,6 @@
 #include <queue>
 #include <sstream>
 using namespace std;
-
 #include "utilities.h"
 #include "movies.h"
 
@@ -92,13 +91,4 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
 }
 
 
-{
-    if (argc != 2) {
-        std::cerr << "usage: " << argv[0] << " inputmoviefile.csv\n";
-        return 1;
-    }
-    Movies movies;
-    movies.readCSV(argv[1]);
-    movies.printAll();
-    return 0;
-}
+
