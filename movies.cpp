@@ -15,14 +15,19 @@ void Movies::readCSV(const std::string& filename){
     while (std::getline(file_input, line)) {
         std::istringstream line_stream(line);
         std::string title, ratingStr;
-
-        if (std::getline(line_stream, title, ',') &&
-            std::getline(line_stream, ratingStr)) 
-        {
-            double rating = std::stod(ratingStr);
-            data.push_back({title, rating});  
+    
+        if (std::getline(line_stream, title, ',') && std::getline(line_stream, ratingStr)) {
+            if (!ratingStr.empty()) { // Check if ratingStr is not empty
+                try {
+                    double rating = std::stod(ratingStr);
+                    data.push_back({title, rating});
+                } catch (const std::invalid_argument& e) {
+                    std::cerr << "Invalid rating found in line: " << line << std::endl;
+                }
+            }
         }
     }
+    
     std::sort(data.begin(), data.end(),
         [](const Movie& a, const Movie& b) { return a.title < b.title; });
 
