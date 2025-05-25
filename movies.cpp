@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "utilities.h"
 
-
+// Reads the CSV file and stores the data
 void Movies::readCSV(const std::string& filename){
     std::ifstream file_input(filename);
     if (!file_input){
@@ -20,17 +20,17 @@ void Movies::readCSV(const std::string& filename){
             data.push_back({title, rating});
         }
     }
-
-    std::sort(data.begin(), data.end(),
-        [](const Movie& a, const Movie& b) { return a.title < b.title; });
 }
 
-void Movies::printAll()const {
+// Prints all movies in the dataset
+void Movies::printAll() const {
     std::cout << std::fixed << std::setprecision(1);
     for (const Movie& m : data){
         std::cout << m.title << ", " << m.rating << '\n';
     }
 }
+
+// Returns a vector of movies that start with the given prefix
 std::vector<Movie> Movies::withPrefix(const std::string& prefix) const {
     std::vector<Movie> result;
     for (const Movie& m : data) {
@@ -40,4 +40,3 @@ std::vector<Movie> Movies::withPrefix(const std::string& prefix) const {
     }
     return result;
 }
-
