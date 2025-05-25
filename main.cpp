@@ -92,10 +92,10 @@ Oscar Valeriano Leiva
 Part 3a: Time Complexity Analysis
 
 Let:
-- **n** = number of movies
-- **m** = number of prefixes
-- **k** = maximum number of movies matching a single prefix
-- **l** = maximum length of a movie title
+- n = number of movies
+- m = number of prefixes
+- k = maximum number of movies matching a single prefix
+- l = maximum length of a movie title
 
 **Step-by-step Analysis:**
 1. Reading and Sorting Movies: 
@@ -105,7 +105,7 @@ Let:
 
 2. Processing Prefixes:
    For each prefix:
-   - Binary search to find the first match using `lower_bound`: O(log n)  
+   - Binary search to find the first match using "lower_bound": O(log n)  
    - Collecting all k matches: O(k)  
    - Sorting those k movies by rating (and title if there’s a tie): O(k log k)  
    So for one prefix, it’s O(log n + k log k).  
@@ -150,7 +150,7 @@ I mainly designed my algorithm to be fast (low time complexity), especially sinc
 - Temporary vectors for matches were the only extra memory I used. 
 
 **How it turned out:**  
-I was able to keep both time and space usage low. C++’s `std::sort` and `lower_bound` made everything efficient and easier to do.  
+I was able to keep both time and space usage low. C++’s "std::sort" and "lower_bound" made everything efficient and easier to do.  
 Between the two, keeping time complexity low was harder because scanning every prefix with a naive and brute approach would have been way too slow with the complexity being (O(nm)).
  Using a sorted vector with binary search helped me get around that and this was in the final code. 
 
