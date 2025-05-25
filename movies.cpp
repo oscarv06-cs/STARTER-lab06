@@ -34,5 +34,13 @@ void Movies::printAll()const {
         std::cout << m.title << ", " << m.rating << '\n';
     }
 }
-
+std::vector<Movie> Movies::withPrefix(const std::string& prefix) const {
+    std::vector<Movie> result;
+    for (const Movie& m : data) {
+        if (m.title.compare(0, prefix.size(), prefix) == 0) {
+            result.push_back(m);
+        }
+    }
+    return result;
+}
 
