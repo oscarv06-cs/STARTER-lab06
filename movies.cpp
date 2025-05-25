@@ -6,7 +6,6 @@
 #include <algorithm>
 #include "utilities.h"
 
-// Reads the CSV file and stores the data
 void Movies::readCSV(const std::string& filename){
     std::ifstream file_input(filename);
     if (!file_input){
@@ -20,28 +19,27 @@ void Movies::readCSV(const std::string& filename){
             data.push_back({title, rating});
         }
     }
-}
-
-// Prints all movies in alphabetical order of title
-void Movies::printAll() const {
-    std::vector<Movie> sortedData = data;
-    std::sort(sortedData.begin(), sortedData.end(), [](const Movie& a, const Movie& b){
+    std::sort(data.begin(), data.end(), [](const Movie& a, const Movie& b){
         return a.title < b.title;
     });
+}
 
+void Movies::printAll() const {
     std::cout << std::fixed << std::setprecision(1);
-    for (const Movie& m : sortedData){
+    for (const Movie& m : data){
         std::cout << m.title << ", " << m.rating << '\n';
     }
 }
 
-// Returns a vector of movies that start with the given prefix
 std::vector<Movie> Movies::withPrefix(const std::string& prefix) const {
     std::vector<Movie> result;
-    for (const Movie& m : data) {
-        if (m.title.compare(0, prefix.size(), prefix) == 0) {
-            result.push_back(m);
-        }
+    auto comp = [](const Movie& m, const std::string& p) {
+        return m.title.compare(0, p.size(), p) < 0;
+    };
+    auto it = std::lower_bound(data.begin(), data.end(), prefix, comp);
+    while (it != data.end() && it->title.compare(0, prefix.size(), prefix) == 0) {
+        result.push_back(*it);
+        ++it;
     }
     return result;
 }
