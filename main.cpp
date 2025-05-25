@@ -82,8 +82,8 @@ int main(int argc, char* argv[]) {
                   << " with rating " << pair.second.rating << '\n';
     }
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    std::cerr << "Elapsed time: " << elapsed.count() << " seconds.\n";
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    std::cerr << "Elapsed time: " << ms << " ms\n";
     return 0;
 }
 /*
@@ -98,61 +98,61 @@ Let:
 - **l** = maximum length of a movie title
 
 **Step-by-step Analysis:**
-1. **Reading and Sorting Movies:**  
-   - Reading all movies from file: O(n)
-   - Sorting all movies by title: O(n log n)  
-   - **Total:** O(n log n)
-2. **Processing Prefixes:**  
+1. Reading and Sorting Movies: 
+   - Reading the file into a vector: O(n)  
+   - Sorting the movies by title: O(n log n)  
+   So this part takes O(n log n).
+
+2. Processing Prefixes:
    For each prefix:
-   - Binary search for the first movie with the prefix (using `lower_bound`): O(log n)
-   - Collect all k matching movies: O(k)
-   - Sorting k matches by rating (and title): O(k log k)
-   - **Total per prefix:** O(log n + k log k)
-   - **Total for m prefixes:** O(m (log n + k log k))
+   - Binary search to find the first match using `lower_bound`: O(log n)  
+   - Collecting all k matches: O(k)  
+   - Sorting those k movies by rating (and title if there’s a tie): O(k log k)  
+   So for one prefix, it’s O(log n + k log k).  
+   For all m prefixes, the total becomes O(m (log n + k log k)).
+
 **Overall Time Complexity:**  
 O(n log n + m (log n + k log k))
 
+worse case, if all movies match a prefix (k = n):
+O(n log n + m n log n)
+
 Empirical Runtimes
 
-Below are the measured runtimes (in milliseconds) for the random datasets using `prefix_large.txt` as input.
+Below are the measured runtimes (in milliseconds) for the random datasets
 
 
  Dataset                   Runtime (ms) 
- input_20_random.csv          2         
- input_100_random.csv         5         
- input_1000_random.csv       30         
- input_76920_random.csv     950         
+ input_20_random.csv          4        
+ input_100_random.csv         4
+ input_1000_random.csv        6         
+ input_76920_random.csv      92         
 
-The runtime increases sub-linearly with n, consistent with our O(n log n + m (log n + k log k)) analysis.
-
----
+The runtimes grew slowly as the dataset got larger, which fits well with our expected O(n log n + m n log n) complexity.
 
 ## Part 3b: Space Complexity Analysis
 
-- Storing all movies: O(n)
-- Storing all prefixes: O(m)
-- Storing matches for a prefix: O(k) (not cumulative)
-- No additional major data structures are used.
+Storing all movies is O(n)
+Storing all prefixes is O(m)
+Storing matches for a prefix is O(k)
+No additional major data structures are used.
 
-**Overall Space Complexity:**  
+TOtal Space Complexity
 O(n + m + k)
-
 ---
-
 ## Part 3c: Time/Space Tradeoff Discussion
 
 **Design Goal:**  
-I primarily designed the algorithm for low time complexity, since the assignment and leaderboard emphasized fast performance for large input sizes.
+I mainly designed my algorithm to be fast (low time complexity), especially since the assignment and leaderboard really emphasized speed for larger inputs.
 
-- By sorting all movies up front and using binary search (`lower_bound`) for each prefix, I achieved fast prefix lookups.
-- I avoided using heavy additional data structures (like a Trie) to keep space usage low, sticking with a sorted vector.
-- Only temporary vectors for matches per prefix are created.
+ - By sorting movies up front and using binary search, I made sure lookups were quick.
+- I didn’t add extra data structures like tries or trees—just a sorted vector so memory usage stayed low and so the implementation and thinking things out would be easier. 
+- Temporary vectors for matches were the only extra memory I used. 
 
-**Outcome:**  
-I was able to achieve both low time and space complexity. The STL's efficient sort and binary search allowed fast queries with minimal additional memory.
-
-**Which was harder to achieve?**  
-Maintaining low time complexity for large datasets was the greater challenge, as a naive scan per prefix would have been too slow (O(nm)). The use of sorted data with binary search solved this efficiently.
+**How it turned out:**  
+I was able to keep both time and space usage low. C++’s `std::sort` and `lower_bound` made everything efficient and easier to do.  
+Between the two, keeping time complexity low was harder because scanning every prefix with a naive and brute approach would have been way too slow with the complexity being (O(nm)).
+ Using a sorted vector with binary search helped me get around that and this was in the final code. 
 
 ---
 */
