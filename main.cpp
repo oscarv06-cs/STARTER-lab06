@@ -12,8 +12,15 @@ using namespace std;
 #include "movies.h"
 #include "utilities.h"
 
-int main(int argc, char** argv){
-    if (argc < 2){
+string trim(const string& s) {
+    size_t start = s.find_first_not_of(" \t\r\n");
+    size_t end = s.find_last_not_of(" \t\r\n");
+    if (start == string::npos) return "";
+    return s.substr(start, end - start + 1);
+}
+
+int main(int argc, char** argv) {
+    if (argc < 2) {
         cerr << "Not enough arguments provided (need at least 1 argument)." << endl;
         cerr << "Usage: " << argv[0] << " moviesFilename prefixFilename " << endl;
         exit(1);
@@ -22,13 +29,11 @@ int main(int argc, char** argv){
     Movies movies;
     movies.readCSV(argv[1]);
 
-    if (argc == 2){
-        // Print all the movies in ascending alphabetical order
+    if (argc == 2) {
         movies.printAll();
         return 0;
     }
 
-    // Open and read the prefix file
     ifstream prefixFile(argv[2]);
     if (prefixFile.fail()) {
         cerr << "Could not open file " << argv[2] << endl;
@@ -38,6 +43,7 @@ int main(int argc, char** argv){
     vector<string> prefixes;
     string line;
     while (getline(prefixFile, line)) {
+        line = trim(line);
         if (!line.empty()) {
             prefixes.push_back(line);
         }
@@ -48,7 +54,6 @@ int main(int argc, char** argv){
         if (matches.empty()) {
             cout << "No movies found with prefix " << prefix << endl;
         } else {
-            // Find highest rated movie
             Movie bestMovie = *max_element(matches.begin(), matches.end(),
                                            [](const Movie& a, const Movie& b) {
                                                return a.rating < b.rating;
