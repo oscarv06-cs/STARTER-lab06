@@ -54,6 +54,9 @@ int main(int argc, char** argv) {
         if (matches.empty()) {
             cout << "No movies found with prefix " << prefix << endl;
         } else {
+            for (const Movie& m : matches) {
+                cout << m.title << ", " << fixed << setprecision(1) << m.rating << endl;
+            }
             Movie bestMovie = *max_element(matches.begin(), matches.end(),
                                            [](const Movie& a, const Movie& b) {
                                                return a.rating < b.rating;
