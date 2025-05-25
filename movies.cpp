@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <iomanip> 
+#include <iomanip>
 #include <algorithm>
 #include "utilities.h"
 
@@ -22,10 +22,15 @@ void Movies::readCSV(const std::string& filename){
     }
 }
 
-// Prints all movies in the dataset
+// Prints all movies in alphabetical order of title
 void Movies::printAll() const {
+    std::vector<Movie> sortedData = data;
+    std::sort(sortedData.begin(), sortedData.end(), [](const Movie& a, const Movie& b){
+        return a.title < b.title;
+    });
+
     std::cout << std::fixed << std::setprecision(1);
-    for (const Movie& m : data){
+    for (const Movie& m : sortedData){
         std::cout << m.title << ", " << m.rating << '\n';
     }
 }
