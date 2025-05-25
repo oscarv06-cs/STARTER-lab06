@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip> 
 #include <algorithm>
+#include "utilities.h"
+
 
 void Movies::readCSV(const std::string& filename){
     std::ifstream file_input(filename);

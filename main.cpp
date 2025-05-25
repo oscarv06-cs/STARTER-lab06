@@ -9,10 +9,8 @@
 #include <iomanip>
 #include <sstream>
 using namespace std;
-#include "utilities.h"
 #include "movies.h"
-
-bool parseLine(string &line, string &movieName, double &movieRating);
+#include "utilities.h"
 
 int main(int argc, char** argv){
     if (argc < 2){
@@ -65,12 +63,3 @@ int main(int argc, char** argv){
 
 /* Add your run time analysis for part 3 of the assignment here as commented block */
 
-bool parseLine(string &line, string &movieName, double &movieRating) {
-    int commaIndex = line.find_last_of(",");
-    movieName = line.substr(0, commaIndex);
-    movieRating = stod(line.substr(commaIndex + 1));
-    if (movieName[0] == '\"') {
-        movieName = movieName.substr(1, movieName.length() - 2);
-    }
-    return true;
-}
