@@ -61,14 +61,10 @@ int main(int argc, char** argv) {
                                            [](const Movie& a, const Movie& b) {
                                                return a.rating < b.rating;
                                            });
-            cout << "Best movie with prefix " << prefix << " is: " << bestMovie.title
+            cout << "Best movie with prefix " << prefix << " is " << bestMovie.title
                  << " with rating " << fixed << setprecision(1) << bestMovie.rating << endl;
         }
     }
 
     return 0;
 }
-
-
-/* Add your run time analysis for part 3 of the assignment here as commented block */
-
