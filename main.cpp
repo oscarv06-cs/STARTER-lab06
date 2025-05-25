@@ -1,62 +1,59 @@
 // Winter'24
 // Instructor: Diba Mirza
 // Student name: Oscar Valeriano
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <iomanip>
-using namespace std;
 #include "movies.h"
 #include "utilities.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 
-string trim(const string& s) {
-    size_t start = s.find_first_not_of(" \t\r\n");
-    size_t end = s.find_last_not_of(" \t\r\n");
-    if (start == string::npos) return "";
-    return s.substr(start, end - start + 1);
-}
-
-int main(int argc, char** argv) {
-    if (argc < 2) {
-        cerr << "Not enough arguments provided (need at least 1 argument)." << endl;
-        cerr << "Usage: " << argv[0] << " moviesFilename prefixFilename " << endl;
-        exit(1);
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <movie_csv> <prefix_file>\n";
+        return 1;
     }
 
+    std::string movieFile = argv[1];
+    std::string prefixFile = argv[2];
+
+    // Read movies
     Movies movies;
-    movies.readCSV(argv[1]);
+    movies.readCSV(movieFile);
 
-    if (argc == 2) {
-        movies.printAll();
-        return 0;
+    // Read prefixes
+    std::ifstream prefix_input(prefixFile);
+    if (!prefix_input) {
+        std::cerr << "Error: Cannot open prefix file " << prefixFile << '\n';
+        return 1;
     }
 
-    ifstream prefixFile(argv[2]);
-    if (prefixFile.fail()) {
-        cerr << "Could not open file " << argv[2] << endl;
-        exit(1);
+    std::vector<std::string> prefixes;
+    std::string line;
+    while (std::getline(prefix_input, line)) {
+        if (!line.empty()) {
+            prefixes.push_back(line);
+        }
     }
 
-    string prefix;
-    while (getline(prefixFile, prefix)) {
-        prefix = trim(prefix);
-        if (prefix.empty()) continue;
-
-        vector<Movie> matches = movies.withPrefix(prefix);
-        if (matches.empty()) {
-            cout << "No movies found with prefix " << prefix << endl;
-        } else {
+    // For each prefix, print matching movies (in CSV order)
+    for (const std::string& prefix : prefixes) {
+        std::vector<Movie> matches = movies.withPrefix(prefix);
+        if (!matches.empty()) {
             for (const Movie& m : matches) {
-                cout << m.title << ", " << fixed << setprecision(1) << m.rating << endl;
+                std::cout << m.title << ", " << m.rating << '\n';
             }
-            Movie bestMovie = *max_element(matches.begin(), matches.end(),
-                                           [](const Movie& a, const Movie& b) {
-                                               return a.rating < b.rating;
-                                           });
-            cout << "Best movie with prefix " << prefix << " is " << bestMovie.title
-                 << " with rating " << fixed << setprecision(1) << bestMovie.rating << endl;
+
+            // Find best movie (highest rating)
+            const Movie* best = &matches[0];
+            for (const Movie& m : matches) {
+                if (m.rating > best->rating) {
+                    best = &m;
+                }
+            }
+            std::cout << "Best movie with prefix " << prefix << " is: " << best->title << " with rating " << best->rating << '\n';
+        } else {
+            std::cout << "No movies found with prefix " << prefix << '\n';
         }
     }
 
